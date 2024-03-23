@@ -18,7 +18,6 @@ app.get("/hello-world", (req, res) => {
 app.get("/add-message", async (req, res) => {
     try {
         let message = req.query.message;
-        logger.log("message " + message);
         if (message === undefined) {
             return res.status(400).send("Missing query parameter. Use ?message=something");
         }
@@ -30,6 +29,40 @@ app.get("/add-message", async (req, res) => {
         return res.status(200).json({
             result: `Added message with id ${result.id}`
         });
+    } catch (error) {
+        logger.error("Error " + error);
+        return res.status(500).send(error);
+    }
+});
+
+// Read all messages on Firestore (GET)
+app.get("/get-messages", async (req, res) => {
+    try {
+        const result = await db
+            .collection("messages")
+            .get();
+        let messages = [];
+        result.docs.map((msg) => {
+            let message = msg.data();
+            message.id = msg.id;
+            messages.push(message);
+        });
+        return res.status(200).json(messages);
+    } catch (error) {
+        logger.error("Error " + error);
+        return res.status(500).send(error);
+    }
+});
+
+// Read single message on Firestore (GET)
+app.get("/get-message/:id", async (req, res) => {
+    try {
+        let id = req.params.id;
+        const result = await db
+            .collection("messages")
+            .doc(id)
+            .get();
+        return res.status(200).json(result.data());
     } catch (error) {
         logger.error("Error " + error);
         return res.status(500).send(error);
