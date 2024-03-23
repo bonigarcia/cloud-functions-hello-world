@@ -36,4 +36,24 @@ app.get("/add-message", async (req, res) => {
     }
 });
 
+// Create message on Firestore (POST)
+app.post("/post-message", async (req, res) => {
+    try {
+        let id = req.body.id;
+        let message = req.body.message;
+        const result = await db
+            .collection("messages")
+            .doc(id)
+            .create({
+                message: message
+            });
+        return res.status(200).json({
+            result: `Added message with id ${id}`
+        });
+    } catch (error) {
+        logger.error("Error " + error);
+        return res.status(500).send(error);
+    }
+});
+
 exports.app = functions.https.onRequest(app);
