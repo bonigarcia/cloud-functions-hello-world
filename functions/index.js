@@ -57,9 +57,9 @@ app.post("/post-message", async (req, res) => {
 });
 
 // Update message on Firestore (POST)
-app.post("/update-message", async (req, res) => {
+app.post("/update-message/:id", async (req, res) => {
     try {
-        let id = req.body.id;
+        let id = req.params.id;
         let message = req.body.message;
         const result = await db
             .collection("messages")
@@ -69,6 +69,23 @@ app.post("/update-message", async (req, res) => {
             });
         return res.status(200).json({
             result: `Updated message with id ${id}`
+        });
+    } catch (error) {
+        logger.error("Error " + error);
+        return res.status(500).send(error);
+    }
+});
+
+// Delete message on Firestore (POST)
+app.delete("/delete-message/:id", async (req, res) => {
+    try {
+        let id = req.params.id;
+        const result = await db
+            .collection("messages")
+            .doc(id)
+            .delete();
+        return res.status(200).json({
+            result: `Deleted message with id ${id}`
         });
     } catch (error) {
         logger.error("Error " + error);
