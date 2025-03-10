@@ -7,7 +7,7 @@ Basic example using Firebase Cloud Functions.
 
 ## About
 
-This is a project made by [Boni Garcia], Associate Professor at [Universidad Carlos III de Madrid]. Copyright &copy; 2024.
+This is a project made by [Boni Garcia], Associate Professor at [Universidad Carlos III de Madrid]. Copyright &copy; 2024-2025.
 
 [Universidad Carlos III de Madrid]: https://www.it.uc3m.es/bogarcia/index.html
 [Boni Garcia]: https://bonigarcia.dev/
